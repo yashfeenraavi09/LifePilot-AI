@@ -1,0 +1,42 @@
+
+# Backend: lifepilot-backend
+
+# Virtual Environment
+lifepilot-backend/venv/
+lifepilot-backend/env/
+lifepilot-backend/.venv/
+
+# Sensitive Data
+lifepilot-backend/.env
+
+# Python cache
+lifepilot-backend/**/__pycache__/
+lifepilot-backend/**/*.py[cod]
+lifepilot-backend/**/*$py.class
+
+# ==========================================
+# Frontend: life-pilot-ui
+# ==========================================
+# Dependencies
+life-pilot-ui/node_modules/
+
+# Next.js Build Output
+life-pilot-ui/.next/
+life-pilot-ui/out/
+life-pilot-ui/build/
+
+# Environment Variables
+life-pilot-ui/.env*
+!life-pilot-ui/.env.example
+
+# Debug logs
+life-pilot-ui/*.log*
+
+# ==========================================
+# General / IDE Settings
+# ==========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
