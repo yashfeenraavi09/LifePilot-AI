@@ -74,7 +74,7 @@ export default function Home() {
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-8 inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
-            <p className="text-sm font-medium text-primary flex items-center gap-2">
+            <p className="text-sm font-medium text-white flex items-center gap-2">
               <Zap className="w-4 h-4" />
               AI-Powered Life Planning
             </p>
@@ -95,7 +95,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-12"
+              className="bg-primary hover:bg-primary/90 text-white text-lg h-12"
             >
               <Link href="/onboarding">
                 Start Life Analysis
@@ -107,7 +107,9 @@ export default function Home() {
               size="lg"
               className="text-lg h-12 border-primary/30 hover:bg-primary/10 bg-transparent"
             >
-              Watch Demo
+              <Link href="/demo">
+                Watch Demo
+              </Link>
             </Button>
           </div>
 

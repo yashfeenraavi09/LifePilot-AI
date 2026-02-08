@@ -1,0 +1,30 @@
+<svg
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#8b5cf6" />
+      <stop offset="100%" stopColor="#d946ef" />
+    </linearGradient>
+  </defs>
+  
+  {/* The "P" / "Arrow" Hybrid Shape */}
+  <path
+    d="M35 85V25L70 45L35 65"
+    stroke="url(#logo-gradient)"
+    stroke-width="12"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+  
+  {/* Secondary Accent Element */}
+  <path
+    d="M50 15L85 50L50 85"
+    stroke="url(#logo-gradient)"
+    stroke-width="6"
+    stroke-linecap="round"
+    opacity="0.6"
+  />
+</svg>

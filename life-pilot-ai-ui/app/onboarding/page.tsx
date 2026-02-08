@@ -8,7 +8,10 @@ import { AIProcessing } from '@/components/ai-processing'
 import { ResultsDashboard } from '@/components/results-dashboard'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ChevronLeft, Download, Share2 } from 'lucide-react'
+import { ChevronLeft, Download, Share2, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
+import html2canvas from 'html2canvas'
+import { jsPDF } from 'jspdf'
 
 interface FormData {
   age: string
@@ -32,9 +35,11 @@ interface FormData {
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState<'form' | 'processing' | 'results'>('form')
   const [formData, setFormData] = useState<FormData | null>(null)
+  const [aiResult, setAiResult] = useState<any>(null)
+  const [isDownloading, setIsDownloading] = useState(false)
 
-  const handleFormSubmit = (data: FormData) => {
-    setFormData(data)
+  const handleFormSubmit = (data: any) => {
+    setAiResult(data)
     setCurrentStep('processing')
   }
 
@@ -45,6 +50,65 @@ export default function OnboardingPage() {
   const handleReset = () => {
     setCurrentStep('form')
     setFormData(null)
+    setAiResult(null)
+  }
+
+  const handleDownloadPDF = async () => {
+    const dashboard = document.getElementById('results-dashboard-root')
+    if (!dashboard) {
+      toast.error('Dashboard content not found')
+      return
+    }
+
+    try {
+      setIsDownloading(true)
+      toast.info('Preparing your PDF...')
+
+      const canvas = await html2canvas(dashboard, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#0a0a0a', // Match theme
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      })
+
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
+      pdf.save(`LifePilot-AI-Plan.pdf`)
+
+      toast.success('PDF downloaded successfully!')
+    } catch (error) {
+      console.error('PDF Error:', error)
+      toast.error('Failed to generate PDF')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'My LifePilot AI Plan',
+      text: 'Check out my personalized AI-powered life plan on LifePilot AI!',
+      url: window.location.href,
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData)
+        toast.success('Shared successfully!')
+      } else {
+        await navigator.clipboard.writeText(window.location.href)
+        toast.success('Link copied to clipboard!')
+      }
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') {
+        toast.error('Failed to share')
+      }
+    }
   }
 
   return (
@@ -97,13 +161,20 @@ export default function OnboardingPage() {
                     variant="outline"
                     size="lg"
                     className="border-primary/30 hover:bg-primary/10 bg-transparent"
+                    onClick={handleDownloadPDF}
+                    disabled={isDownloading}
                   >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download PDF
+                    {isDownloading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4 mr-2" />
+                    )}
+                    {isDownloading ? 'Generating...' : 'Download PDF'}
                   </Button>
                   <Button
                     size="lg"
                     className="bg-primary hover:bg-primary/90"
+                    onClick={handleShare}
                   >
                     <Share2 className="w-4 h-4 mr-2" />
                     Share
@@ -112,7 +183,9 @@ export default function OnboardingPage() {
               </div>
 
               {/* Results Dashboard */}
-              <ResultsDashboard />
+              <div id="results-dashboard-root">
+                <ResultsDashboard data={aiResult} />
+              </div>
 
               {/* CTA Section */}
               <div className="mt-20 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 p-8 md:p-12 text-center">

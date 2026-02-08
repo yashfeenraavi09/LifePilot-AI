@@ -73,11 +73,11 @@ Task Plan:
 Perform deep multi-step reasoning and a realistic 10-year simulation.
 
 Return strictly valid JSON containing:
-- option_wise_analysis
-- yearly_income_projection (10 years)
-- savings_projection
-- lifestyle_score
-- risk_score
+- option_wise_comparison (detailed metrics for target countries vs current)
+- yearly_income_projection (10 years, list of {{ "year": int, "value": int }})
+- savings_projection (10 years, list of {{ "year": int, "value": int }})
+- metrics (financial_roi, career_growth, lifestyle, stability, risk_management, overall_score) - all 0-100
+- career_trajectory (list of {{ "month": string, "value": int }})
 """
 
     analysis_raw = run_agent(analysis_prompt)
@@ -93,20 +93,34 @@ User Profile:
 Analysis Results:
 {analysis}
 
-Choose the best life decision using weighted scoring.
+Choose the best life decision using weighted scoring and provide a visual roadmap.
 
 Return strictly valid JSON in this format:
 {{
-  "best_choice": "...",
-  "reasoning": "...",
-  "decision_scores": {{
-      "option_1": 87.5,
-      "option_2": 72.3
+  "main_path": {{
+    "title": "Path Name",
+    "description": "Short summary",
+    "confidence": 95,
+    "potential": "High Potential | Medium Potential",
+    "key_reasons": ["Reason 1", "Reason 2"]
   }},
-  "step_by_step_roadmap": [
-      "Step 1 ...",
-      "Step 2 ...",
-      "Step 3 ..."
+  "alternative_paths": [
+    {{
+      "title": "Path Name",
+      "recommended": false,
+      "cost": "$Amount",
+      "avg_salary": "$Amount/yr",
+      "lifestyle_score": 85,
+      "risk_level": "Low | Medium | High",
+      "growth_potential": 90
+    }}
+  ],
+  "roadmap": [
+    {{
+      "period": "Months X-Y",
+      "phase": "Phase Name",
+      "tasks": ["Task 1", "Task 2"]
+    }}
   ]
 }}
 """

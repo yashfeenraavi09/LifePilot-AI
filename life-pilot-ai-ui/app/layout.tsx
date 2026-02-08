@@ -10,7 +10,6 @@ const _geistMono = Geist_Mono({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'LifePilot AI - Global Career & Education Decision Engine',
   description: 'An AI that plans your life — before life plans you. Analyze your education, career, finances, and goals to design your best future path.',
-  generator: 'v0.app',
   viewport: {
     width: 'device-width',
     initialScale: 1,

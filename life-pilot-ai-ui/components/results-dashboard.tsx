@@ -1,13 +1,17 @@
 'use client'
 
 import React from "react"
-import { Card, CardContent } from "./ui/card"
+import { MetricsCards } from "./results/metrics-cards"
+import { FinancialCharts } from "./results/financial-charts"
+import { PathComparison } from "./results/path-comparison"
+import { LifeRoadmap } from "./results/life-roadmap"
 
 interface ResultsDashboardProps {
   data: any
+  id?: string
 }
 
-export function ResultsDashboard({ data }: ResultsDashboardProps) {
+export function ResultsDashboard({ data, id }: ResultsDashboardProps) {
   if (!data) {
     return (
       <div className="text-center text-muted-foreground py-10">
@@ -16,61 +20,43 @@ export function ResultsDashboard({ data }: ResultsDashboardProps) {
     )
   }
 
-  const { plan = {}, analysis = {}, decision = {} } = data
+  const { analysis = {}, decision = {} } = data
+
+  const financialData = {
+    income: analysis.yearly_income_projection || [],
+    savings: analysis.savings_projection || []
+  }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="space-y-16">
 
-      {/* Main Decision */}
-      <Card>
-        <CardContent className="p-6">
-          <h2 className="text-2xl font-bold mb-4">🧠 LifePilot AI Decision</h2>
-          <p className="text-lg font-semibold text-primary">
-            {decision?.best_choice || "No decision generated"}
-          </p>
-          <p className="mt-2 text-muted-foreground">
-            {decision?.reasoning || "AI reasoning unavailable."}
-          </p>
-        </CardContent>
-      </Card>
+      {/* Path Comparison Section */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <PathComparison
+          mainPath={decision.main_path}
+          alternativePaths={decision.alternative_paths}
+        />
+      </section>
 
-      {/* Roadmap */}
-      {decision?.step_by_step_roadmap?.length > 0 && (
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-xl font-semibold mb-3">📍 Step-by-Step Roadmap</h3>
-            <ul className="list-disc ml-6 space-y-2">
-              {decision.step_by_step_roadmap.map((step: string, idx: number) => (
-                <li key={idx}>{step}</li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
+      {/* Financial Projections Section */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+        <h2 className="text-3xl font-bold mb-8">Financial Projections</h2>
+        <FinancialCharts
+          data={financialData}
+          trajectory={analysis.career_trajectory || []}
+        />
+      </section>
 
-      {/* Scores */}
-      {decision?.decision_scores && (
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-xl font-semibold mb-3">📊 Decision Scores</h3>
-            <pre className="bg-muted p-4 rounded-lg overflow-auto text-sm">
-              {JSON.stringify(decision.decision_scores, null, 2)}
-            </pre>
-          </CardContent>
-        </Card>
-      )}
+      {/* Career Growth & Performance Metrics Section */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+        <h2 className="text-3xl font-bold mb-8">Career Growth & Performance Metrics</h2>
+        <MetricsCards metrics={analysis.metrics} />
+      </section>
 
-      {/* Analysis */}
-      {analysis && (
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-xl font-semibold mb-3">🔍 Deep Analysis</h3>
-            <pre className="bg-muted p-4 rounded-lg overflow-auto max-h-[500px] text-sm">
-              {JSON.stringify(analysis, null, 2)}
-            </pre>
-          </CardContent>
-        </Card>
-      )}
+      {/* Life Roadmap Section */}
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400">
+        <LifeRoadmap steps={decision.roadmap || []} />
+      </section>
 
     </div>
   )
