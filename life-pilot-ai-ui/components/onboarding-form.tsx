@@ -90,9 +90,15 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
       const data = await res.json()
       onComplete(data)
 
-    } catch (err) {
-      alert("Backend connection failed. Check server.")
-      console.error(err)
+    } catch (err: any) {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+      alert(`Backend connection failed at ${apiUrl}. Check console for details.`)
+      console.error("Connection Error Information:", {
+        url: apiUrl,
+        endpoint: "/analyze-life",
+        error: err.message || err,
+        stack: err.stack
+      })
     } finally {
       setLoading(false)
     }
@@ -234,8 +240,8 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
                     key={country}
                     onClick={() => handleCountryToggle(country)}
                     className={`p-3 rounded-lg border transition-all ${formData.targetCountries.includes(country)
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'border-border bg-card hover:border-primary/50'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'border-border bg-card hover:border-primary/50'
                       }`}
                   >
                     {country}
