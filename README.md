@@ -1,6 +1,8 @@
 ﻿# 🪐 LifePilot AI
 ### *An AI that plans your life — before life plans you.*
 
+**Live Backend:** [https://lifepilot-ai-lpcy.onrender.com/](https://lifepilot-ai-lpcy.onrender.com/)
+
 ---
 
 **LifePilot AI** is the ultimate decision-intelligence engine for long-term life planning. In an era of global uncertainty, traditional career advice is no longer enough. LifePilot leverages **Gemini** to conduct deep, multi-agent analysis of your education, career trajectory, and financial goals, engineering a precise, actionable roadmap for your future.
@@ -52,31 +54,21 @@ Powered by a sophisticated multi-agent system on the backend:
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Production Deployment
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- [Google AI (Gemini) API Key](https://aistudio.google.com/)
+### 1. Backend (Render)
+1. **GitHub Blueprint**: Connect this repository to Render using the "Blueprint" feature. It will detect `lifepilot-backend/render.yaml` automatically.
+2. **Environment**: Add your `GEMINI_API_KEY` in the Render dashboard's environment settings.
+3. **Live URL**: Once deployed, copy your backend URL (e.g., `https://lifepilot-ai-lpcy.onrender.com`).
 
-### 1. Backend Setup
-```bash
-cd lifepilot-backend
-python -m venv venv
-source venv/bin/scripts/activate # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-# Set your GEMINI_API_KEY in .env
-python -m uvicorn app.main:app --reload --port 8000
-```
+### 2. Frontend (Vercel)
+1. **New Project**: Create a new project on Vercel and import this repository.
+2. **Configuration**:
+   - **Root Directory**: `life-pilot-ai-ui`
+   - **Environment Variables**: Add `NEXT_PUBLIC_API_URL` with your Render backend URL as the value.
+3. **Deploy**: Build and visit your live LifePilot AI!
 
-### 2. Frontend Setup
-```bash
-cd life-pilot-ai-ui
-npm install
-npm run dev
-# App will be live at http://localhost:3000
-```
-
+---
 
 ## 🏗️ Project Structure
 ```text
