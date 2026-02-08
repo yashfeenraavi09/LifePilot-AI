@@ -78,7 +78,8 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
     try {
       setLoading(true)
 
-      const res = await fetch("http://localhost:8000/analyze-life", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+      const res = await fetch(`${apiUrl}/analyze-life`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -232,11 +233,10 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
                   <button
                     key={country}
                     onClick={() => handleCountryToggle(country)}
-                    className={`p-3 rounded-lg border transition-all ${
-                      formData.targetCountries.includes(country)
+                    className={`p-3 rounded-lg border transition-all ${formData.targetCountries.includes(country)
                         ? 'bg-primary text-primary-foreground border-primary'
                         : 'border-border bg-card hover:border-primary/50'
-                    }`}
+                      }`}
                   >
                     {country}
                   </button>
@@ -350,7 +350,7 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
         return null
     }
   }
-  
+
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="mb-8">
@@ -371,9 +371,8 @@ export function OnboardingForm({ onComplete }: OnboardingFormProps) {
         {steps.map((_, idx) => (
           <div
             key={idx}
-            className={`h-3 w-3 rounded-full transition-all ${
-              idx <= currentStep ? 'bg-primary' : 'bg-border'
-            }`}
+            className={`h-3 w-3 rounded-full transition-all ${idx <= currentStep ? 'bg-primary' : 'bg-border'
+              }`}
           />
         ))}
       </div>
